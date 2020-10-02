@@ -1,7 +1,8 @@
-const moment = require('moment');
+const moment = require("moment");
+
+const DEBUG_MODE = false;
 
 module.exports = class Console {
-
     static log(text) {
         this.out(text, "Info");
     }
@@ -15,10 +16,10 @@ module.exports = class Console {
     }
 
     static debug(text) {
-        this.out(text, "Debug");
+        if (DEBUG_MODE) this.out(text, "Debug");
     }
 
     static out(text, type) {
         console.log(`[${moment().format("D.M.Y H:mm:ss")}]: [${type}]`, text);
     }
-}
+};
