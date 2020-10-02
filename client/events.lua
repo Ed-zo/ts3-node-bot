@@ -17,13 +17,15 @@ end
 local function onTextMessageEvent(serverConnectionHandlerID, targetMode, toID, fromID, fromName, fromUniqueIdentifier, message, ffIgnored)
     local myClientID, error = ts3.getClientID(serverConnectionHandlerID)
 
-    if myClientID ~= fromID then
-
-        post({event='onTextMessage', data={fromID=fromID, fromName=fromName, fromUID=fromUniqueIdentifier, message=message}})
-        
+    if error ~= ts3errors.ERROR_ok then
+        print("Error occured: " .. error)
+    else
+        if myClientID ~= fromID then
+            post({event='onTextMessage', data={fromID=fromID, fromName=fromName, fromUID=fromUniqueIdentifier, message=message}})
+        end
     end
 
-	return 0
+    return 0
 end
 
 tsbot_events = {
