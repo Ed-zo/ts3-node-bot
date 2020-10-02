@@ -1,10 +1,10 @@
-module.Visibility = {
+const Visibility = {
     ENTER_VISIBILITY = 0,
     RETAIN_VISIBILITY = 1,
     LEAVE_VISIBILITY = 2
 }
 
-module.ConnectStatus = {
+const ConnectStatus = {
     STATUS_DISCONNECTED = 0,            // There is no activity to the server, this is the default value
     STATUS_CONNECTING = 1, //We are trying to connect, we haven't got a clientID yet, we haven't been accepted by the server
     STATUS_CONNECTED = 2, //The server has accepted us, we can talk and hear and we got a clientID, but we don't have the channels and clients yet, we can get server infos (welcome msg etc.)
@@ -12,13 +12,13 @@ module.ConnectStatus = {
     STATUS_CONNECTION_ESTABLISHED = 4   // we are CONNECTED and we have the client and channels available
 }
 
-module.TalkStatus = {
+const TalkStatus = {
     STATUS_NOT_TALKING = 0,
     STATUS_TALKING = 1,
     STATUS_TALKING_WHILE_DISABLED = 2
 }
 
-module.SpeexCodec = {
+const SpeexCodec = {
     CODEC_SPEEX_NARROWBAND = 0,     // mono, 16bit, 8kHz, bitrate dependant on the quality setting
     CODEC_SPEEX_WIDEBAND = 1, //mono, 16bit, 16kHz, bitrate dependant on the quality setting
     CODEC_SPEEX_ULTRAWIDEBAND = 2, //mono, 16bit, 32kHz, bitrate dependant on the quality setting
@@ -26,39 +26,39 @@ module.SpeexCodec = {
     CODEC_DUMMY_MONO = 4            // mono, 16bit, 48kHz, no compression(=> bitrate == 93.75 KiB / s!)
 }
 
-module.TextMessageTargetMode = {
+const TextMessageTargetMode = {
     TextMessageTarget_CLIENT = 1,
     TextMessageTarget_CHANNEL = 2,
     TextMessageTarget_SERVER = 3,
     TextMessageTarget_MAX = 4
 }
 
-module.MuteInputStatus = {
+const MuteInputStatus = {
     MUTEINPUT_NONE = 0,
     MUTEINPUT_MUTED = 1
 }
 
-module.MuteOutputStatus = {
+const MuteOutputStatus = {
     MUTEOUTPUT_NONE = 0,
     MUTEOUTPUT_MUTED = 1
 }
 
-module.HardwareInputStatus = {
+const HardwareInputStatus = {
     HARDWAREINPUT_DISABLED = 0,
     HARDWAREINPUT_ENABLED = 1
 }
 
-module.HardwareOutputStatus = {
+const HardwareOutputStatus = {
     HARDWAREOUTPUT_DISABLED = 0,
     HARDWAREOUTPUT_ENABLED = 1
 }
 
-module.InputDeactivationStatus = {
+const InputDeactivationStatus = {
     INPUT_ACTIVE = 0,
     INPUT_DEACTIVATED = 1
 }
 
-module.ClientProperties = {
+const ClientProperties = {
     CLIENT_UNIQUE_IDENTIFIER = 0,                // automatically up - to - date for any client "in view", can be used to identify this particular client installation
     CLIENT_NICKNAME = 1, //automatically up - to - date for any client "in view"
     CLIENT_VERSION = 2, // for other clients than ourself, this needs to be requested(=> requestClientVariables)
@@ -121,7 +121,7 @@ module.ClientProperties = {
     CLIENT_ENDMARKER_RARE = 58
 }
 
-module.ChannelProperties = {
+const ChannelProperties = {
     CHANNEL_NAME = 0,                              // Available for all channels that are "in view", always up - to - date
     CHANNEL_TOPIC = 1, //Available for all channels that are "in view", always up - to - date
     CHANNEL_DESCRIPTION = 2, //Must be requested(=> requestChannelDescription)
@@ -158,7 +158,7 @@ module.ChannelProperties = {
     CHANNEL_ENDMARKER_RARE = 32
 }
 
-module.VirtualServerProperties = {
+const VirtualServerProperties = {
     VIRTUALSERVER_UNIQUE_IDENTIFIER = 0,                            // available when connected, can be used to identify this particular server installation
     VIRTUALSERVER_NAME = 1, //available and always up - to - date when connected
     VIRTUALSERVER_WELCOMEMESSAGE = 2, //available when connected, (=> requestServerVariables)
@@ -241,7 +241,7 @@ module.VirtualServerProperties = {
     VIRTUALSERVER_ENDMARKER_RARE = 78
 }
 
-module.LogTypes = {
+const LogTypes = {
     LogType_NONE          = 0x0000,
     LogType_FILE          = 0x0001,
     LogType_CONSOLE       = 0x0002,
@@ -250,7 +250,7 @@ module.LogTypes = {
     LogType_DATABASE      = 0x0010
 }
 
-module.LogLevel = {
+const LogLevel = {
     LogLevel_CRITICAL = 0, // these messages stop the program
     LogLevel_ERROR = 1, //everything that is really bad, but not so bad we need to shut down
     LogLevel_WARNING = 2, //everything that * might * be bad
@@ -259,27 +259,29 @@ module.LogLevel = {
     LogLevel_DEVEL = 5     // developer only output(will not be displayed in release mode)
 }
 
-module.PluginMenuType = {
+const PluginMenuType = {
     PLUGIN_MENU_TYPE_GLOBAL = 0,
     PLUGIN_MENU_TYPE_CHANNEL = 1,
     PLUGIN_MENU_TYPE_CLIENT = 2
 }
 
-ts3defs = {
-    Visibility = Visibility,
-    ConnectStatus = ConnectStatus,
-    TalkStatus = TalkStatus,
-    SpeexCodec = SpeexCodec,
-    TextMessageTargetMode = TextMessageTargetMode,
-    MuteInputStatus = MuteInputStatus,
-    MuteOutputStatus = MuteOutputStatus,
-    HardwareInputStatus = HardwareInputStatus,
-    HardwareOutputStatus = HardwareOutputStatus,
-    InputDeactivationStatus = InputDeactivationStatus,
-    ClientProperties = ClientProperties,
-    ChannelProperties = ChannelProperties,
-    VirtualServerProperties = VirtualServerProperties,
-    LogTypes = LogTypes,
-    LogLevel = LogLevel,
-    PluginMenuType = PluginMenuType
+const ts3defs = {
+    Visibility: Visibility,
+    ConnectStatus: ConnectStatus,
+    TalkStatus: TalkStatus,
+    SpeexCodec: SpeexCodec,
+    TextMessageTargetMode: TextMessageTargetMode,
+    MuteInputStatus: MuteInputStatus,
+    MuteOutputStatus: MuteOutputStatus,
+    HardwareInputStatus: HardwareInputStatus,
+    HardwareOutputStatus: HardwareOutputStatus,
+    InputDeactivationStatus: InputDeactivationStatus,
+    ClientProperties: ClientProperties,
+    ChannelProperties: ChannelProperties,
+    VirtualServerProperties: VirtualServerProperties,
+    LogTypes: LogTypes,
+    LogLevel: LogLevel,
+    PluginMenuType: PluginMenuType
 }
+
+module.exports = ts3defs;
