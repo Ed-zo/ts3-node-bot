@@ -169,6 +169,7 @@ class RoomManager {
 
             owner.move(createdChannel);
             this.bot.teamspeak.setClientChannelGroup(CONFIG.groups.channel_admin.id.toString(), createdChannel, owner);
+            response("Teraz môžete použiť príkaz [b]!automove[/b] a vždy po pripojení Vás premiestním do Vašej miestnosti. Pre viac info [b]!automove info[/b]. (Príkaz môžu použíť aj kamaráti)");
 
             await this.bot.db.query('INSERT INTO `ts_rooms_backup` (`room_name`, `owner`, `creation_date`, `expiration_time`, `room_id`, `user_ip`) VALUES (?, ?, ?, ?, ?, ?)',
                 [params[1], owner.uniqueIdentifier, cdate, cdate + config['roomLifespan'], createdChannel.cid, owner.connectionClientIp]

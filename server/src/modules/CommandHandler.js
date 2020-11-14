@@ -43,7 +43,7 @@ class CommandHandler {
      * @memberof CommandHandler
      */
     handleClientMessage(data) {
-        Console.log(`${data.fromName}: ${data.message}`);
+        Console.out(`${data.fromName}: ${data.message}`, 'CMD');
         var seperatedMsg = data.message.match(/'[^']*'|"[^"]*"|\S+/g) || [];
 
         for (var i in seperatedMsg) {

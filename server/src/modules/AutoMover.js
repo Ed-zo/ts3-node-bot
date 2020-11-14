@@ -23,6 +23,19 @@ class AutoMover {
                 if (params[1] == 'off') {
                     await this.bot.db.query("DELETE FROM automove WHERE uniqueid=?", [data.fromUniqueIdentifier]);
                     response("Automove bol vypnutý");
+                } else if (params[1] == 'silent') {
+                    let res = await this.bot.db.query("SELECT * FROM automove WHERE uniqueid=?", [data.fromUniqueIdentifier]);
+                    if(res.length > 0) {
+                        if(res[0]['msg'] == 1) {
+                            this.bot.db.query("UPDATE automove SET msg = 0 WHERE uniqueid=?", [data.fromUniqueIdentifier]);
+                            response("Nabudúce Vás už nebudem otravovať. Správy vypnute.");
+                        } else {
+                            this.bot.db.query("UPDATE automove SET msg = 1 WHERE uniqueid=?", [data.fromUniqueIdentifier]);
+                            response("Automove správy zapnuté.");
+                        }
+                    } else {
+                        response('Pre vypnutie automove správ musíte mať automove najprv zapnutý!')
+                    }
                 } else {
                     switch (params[1]) {
                         default:
@@ -60,7 +73,7 @@ class AutoMover {
      * @param {{client: TeamSpeakClient}} event
      */
     async onNewConnection({ client }) {
-        if(client.isQuery()) return false;
+        if (client.isQuery()) return false;
 
         let res = await this.bot.db.query("SELECT * FROM automove WHERE uniqueid=?", [client.uniqueIdentifier]);
 
@@ -73,9 +86,14 @@ class AutoMover {
                 let hasChannelGroup = await this.hasChannelGroup(client.databaseId, channel.cid);
 
                 if (hasChannelGroup) {
+                    if (client.cid == roomID) return;
+                    
                     client.move(roomID);
-                    client.message(`Vitajte na serveri! Automaticky som Vás presunul do [b]${channel.name}[/b].`)
-                    client.message('V prípade, že už nechcete byť automaticky presúvany, môžete si túto akciu vypnuť príkazom [b]!automove off[/b]')
+                    if (res[0]['msg'] == 1) {
+                        client.message(`Vitajte na serveri! Automaticky som Vás presunul do [b]${channel.name}[/b].`)
+                        client.message('V prípade, že už nechcete byť automaticky presúvany, môžete si túto akciu vypnuť príkazom [b]!automove off[/b]')
+                        client.message('Ak nechcete aby som Vám vždy písal pri vstupe použite [b]!automove silent[/b]');
+                    }
                 } else {
                     client.message("V miestnosti do ktorej ste mali zapnutý [b]!automove[/b] už nemáte práva (skupinu). Automove bude vypnutý.");
                     this.bot.db.query("DELETE FROM automove WHERE uniqueid=?", [client.uniqueIdentifier]);
