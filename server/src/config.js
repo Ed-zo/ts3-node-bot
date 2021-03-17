@@ -4,7 +4,7 @@ const moment = require('moment');
 module.exports = {
 
     client: {
-        username: "[BOT] !help (v1) - Už fungujem",
+        username: "[Room BOT] !help",
         channel: 70975,
         channelPass: ""
     },
@@ -33,7 +33,7 @@ module.exports = {
         enableCleanup: false,
         maxChannels: 120,
         parentRoomChannel: 43546,
-        roomLifespan: moment.duration(4, 'days').asSeconds(),
+        roomLifespan: moment.duration(14, 'days').asSeconds(),
         oneRoomPerIP: true //should user be able to create channel if somebody on the IP has already one created ?
     },
 

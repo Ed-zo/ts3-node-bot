@@ -17,6 +17,7 @@ class RoomManager {
         this.cleanupInterval = false;
 
         this.bot.teamspeak.on("clientmoved", this.onClientMoveEvent.bind(this));
+        this.bot.teamspeak.on("channeledit", this.onChannelEdit.bind(this));
 
         this.initialize();
     }
@@ -87,6 +88,20 @@ class RoomManager {
 
             await this.bot.db.query('UPDATE `ts_rooms` SET expiration_time = ? where room_id = ?', [cdate, channelID])
             Console.log(`Updating expiration of ${event.channel.name} for ${cdate.toString()}`);
+        }
+    }
+
+    /**
+     * @param {import("ts3-nodejs-library/lib/types/Events").ChannelEdit} event
+     */
+    async onChannelEdit(event) {
+        let channelTree = await getChannelParentTree(this.bot.teamspeak, event.channel.cid);
+
+        //If user edit Bot channel
+        if (channelTree.indexOf(this.bot.configManager.config['parentRoomChannel'].toString()) != -1) {
+            let channelID = getRoomChannelID(channelTree, this.bot.configManager.config['parentRoomChannel']);
+
+            await this.bot.db.query('UPDATE `ts_rooms` SET room_name = ? where room_id = ?', [event.channel.name, channelID]);
         }
     }
 
@@ -394,8 +409,7 @@ class RoomManager {
                     deletedRooms.push({ id: result[i].room_id });
                     //console.log("IN DB, DOES NOT EXIST, NOT EXPIRED -> DELETE", result[i].room_id, room.data[0]);
                     if (dryRun === false) {
-                        // await this.bot.db.query('DELETE FROM `ts_rooms` where room_id = ?', [result[i].room_id])
-                        console.log("Dleteetee");
+                        await this.bot.db.query('DELETE FROM `ts_rooms` where room_id = ?', [result[i].room_id])
                     }
 
                 } else if (result[i].expiration_time * 1 < cdate * 1) {
@@ -404,8 +418,7 @@ class RoomManager {
                     expiredRooms.push({ id: result[i].room_id, name: room.name });
 
                     if (dryRun === false) {
-                        // this.bot.teamspeak.channelDelete(result[i].room_id);
-                        console.log("Dleteetee");
+                        this.bot.teamspeak.channelDelete(result[i].room_id);
                     }
 
                 }
@@ -419,7 +432,7 @@ class RoomManager {
             if (databazaRoomky.indexOf(channel.cid) == -1) {
                 if (dryRun === false) {
                     // await this.bot.teamspeak.channelDelete(channel);
-                    console.log("Dleteetee");
+                    // console.log("Dleteetee");
                 }
 
                 nodbRooms.push({ id: channel.cid, name: channel.name });
